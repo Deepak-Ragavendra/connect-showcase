@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect – Real Connections, Real Life</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Cursor Effect */
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.15), transparent 70%);
+            pointer-events: none;
+            transition: transform 0.2s ease;
+            z-index: 9999;
+            mix-blend-mode: screen;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #22c55e;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.1), transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(6, 182, 212, 0.1), transparent 50%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1000px;
+            padding: 0 24px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 50px;
+            font-size: 13px;
+            margin-bottom: 32px;
+            color: #22c55e;
+            font-weight: 500;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 8vw, 96px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, #22c55e, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            background-size: 200% auto;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 48px;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            color: #000;
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(34, 197, 94, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Section Base */
+        section {
+            padding: 120px 24px;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 50px;
+            font-size: 12px;
+            color: #22c55e;
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Problem Section */
+        .problem-section {
+            background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 40px 32px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #22c55e, #06b6d4);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .problem-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(34, 197, 94, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .problem-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .problem-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .problem-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+        }
+
+        /* Solution Section */
+        .solution-section {
+            background: #0a0a0a;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(6, 182, 212, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 32px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .solution-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .solution-card:hover::after {
+            opacity: 1;
+        }
+
+        .solution-card:hover {
+            transform: scale(1.05);
+        }
+
+        .solution-icon {
+            font-size: 48px;
+            margin-bottom: 24px;
+        }
+
+        .solution-card h3 {
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .solution-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* Steps Section */
+        .steps-section {
+            background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+            position: relative;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 40px;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #000;
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
+            transition: all 0.4s;
+        }
+
+        .step:hover .step-number {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 60px rgba(34, 197, 94, 0.6);
+        }
+
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* Safety Section */
+        .safety-section {
+            background: #0a0a0a;
+            position: relative;
+        }
+
+        .safety-highlight {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(239, 68, 68, 0.1));
+            border: 2px solid #ec4899;
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .safety-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: linear-gradient(135deg, #ec4899, #ef4444);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .safety-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .safety-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 40px 32px;
+            transition: all 0.4s;
+        }
+
+        .safety-card:hover {
+            background: rgba(236, 72, 153, 0.05);
+            border-color: rgba(236, 72, 153, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .safety-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #ec4899;
+        }
+
+        .safety-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* Audience Section */
+        .audience-section {
+            background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+        }
+
+        .audience-card {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 32px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .audience-card::before {
+            content: '';
+            position: absolute;
+            inset: -100%;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            opacity: 0;
+            transition: all 0.5s;
+        }
+
+        .audience-card:hover::before {
+            inset: 0;
+            opacity: 1;
+        }
+
+        .audience-card:hover {
+            transform: scale(1.05);
+        }
+
+        .audience-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .audience-card:hover h3,
+        .audience-card:hover p {
+            color: #000;
+        }
+
+        .audience-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            transition: color 0.3s;
+        }
+
+        .audience-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            transition: color 0.3s;
+        }
+
+        /* Roadmap Section */
+        .roadmap-section {
+            background: #0a0a0a;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .roadmap-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid transparent;
+            border-radius: 16px;
+            padding: 40px 32px;
+            transition: all 0.4s;
+        }
+
+        .roadmap-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-left-color: #22c55e;
+            transform: translateX(8px);
+        }
+
+        .roadmap-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .roadmap-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* Impact Section */
+        .impact-section {
+            background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 48px;
+        }
+
+        .impact-item {
+            text-align: center;
+        }
+
+        .impact-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.3);
+            transition: all 0.4s;
+        }
+
+        .impact-item:hover .impact-icon {
+            transform: scale(1.1) rotate(-10deg);
+            box-shadow: 0 0 60px rgba(34, 197, 94, 0.5);
+        }
+
+        .impact-item h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .impact-item p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* Founder Section */
+        .founder-section {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(6, 182, 212, 0.05));
+        }
+
+        .founder-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 20px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: justify;
+        }
+
+        .founder-content .highlight {
+            margin-top: 32px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Disclaimer Section */
+        .disclaimer-section {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
+            padding: 80px 24px;
+        }
+
+        .disclaimer-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #f59e0b;
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .disclaimer-content h2 {
+            color: #f59e0b;
+            margin-bottom: 24px;
+            font-size: 32px;
+        }
+
+        .disclaimer-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 80px 24px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+        }
+
+        .footer-email {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 32px;
+        }
+
+        .footer-bottom {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+        }
+
+        .footer-bottom p {
+            margin-bottom: 8px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 24px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            section {
+                padding: 80px 24px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .problem-grid,
+            .solution-grid,
+            .steps-container,
+            .safety-grid,
+            .audience-grid,
+            .roadmap-grid,
+            .impact-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Connect</div>
+        <ul class="nav-links">
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#safety">Safety</a></li>
+            <li><a href="#vision">Vision</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <h1>Because <span class="gradient">no one</span> should feel alone in a city full of people</h1>
+            <p>A mobile app concept helping lonely individuals find real friends through shared interests, real-life activities, and genuine human connection.</p>
+            <div class="cta-group">
+                <a href="#solution" class="btn btn-primary">Explore the Vision</a>
+                <a href="#problem" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section" id="problem">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Reality We're Addressing</h2>
+                <p>Loneliness is silently growing among people living away from home. Millions feel isolated despite being surrounded by others.</p>
+            </div>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>Geographic Isolation</h3>
+                    <p>Working professionals and students relocate for opportunities, leaving behind their support networks and finding themselves in unfamiliar cities without genuine connections.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Routine-Driven Loneliness</h3>
+                    <p>Daily routines of work, commute, and home create cycles that limit opportunities for spontaneous social interaction and meaningful relationship building.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Digital, Not Real</h3>
+                    <p>Existing platforms focus on endless messaging and superficial connections, but people crave authentic, face-to-face interactions with like-minded individuals.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Growing Epidemic</h3>
+                    <p>Research shows loneliness among young professionals is at an all-time high, affecting mental health, productivity, and overall quality of life.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution-section" id="solution">
+        <div class="container">
+            <div class="section-header">
+                <h2>Interest-Based Connections</h2>
+                <p>Transform strangers into genuine friends through real-life experiences</p>
+            </div>
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <div class="solution-icon">🎯</div>
+                    <h3>Interest-Based Matching</h3>
+                    <p>Connect with people who share your hobbies, passions, and lifestyle preferences.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">🤝</div>
+                    <h3>Real-Life Meetups</h3>
+                    <p>Move beyond chatting to actual experiences like hiking, dining, and activities.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">👥</div>
+                    <h3>One-on-One & Groups</h3>
+                    <p>Choose between intimate connections or join group activities based on comfort.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">💫</div>
+                    <h3>Genuine Friendships</h3>
+                    <p>Build authentic relationships with real human connection and companionship.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Steps Section -->
+    <section class="steps-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple Steps to Connection</h2>
+                <p>A thoughtful process designed to help you find your people</p>
+            </div>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>Create your profile with privacy controls that protect your identity.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Select Interests</h3>
+                    <p>Choose hobbies and activities that genuinely represent who you are.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Select Spots</h3>
+                    <p>Choose your favourite location to meet-up.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Get Matched</h3>
+                    <p>Discover like-minded individuals who share your passions nearby.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>Schedule Meetups</h3>
+                    <p>Coordinate activities that turn connections into lasting friendships.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Safety Section -->
+    <section class="safety-section" id="safety">
+        <div class="container">
+            <div class="section-header">
+                <h2>Safety & Trust First</h2>
+                <p>Designed with robust controls to ensure every user feels secure</p>
+            </div>
+            <div class="safety-highlight">
+                <div class="safety-badge">Safety First</div>
+                <h3>Your Safety is Our Priority</h3>
+                <p>From identity verification to in-app safety features, we prioritize your well-being in every interaction.</p>
+            </div>
+            <div class="safety-grid">
+                <div class="safety-card">
+                    <h3>Identity Verification</h3>
+                    <p>Multi-step verification ensures users are genuine, fostering a trustworthy community.</p>
+                </div>
+                <div class="safety-card">
+                    <h3>In-App Safety Features</h3>
+                    <p>Emergency contact options and location sharing provide peace of mind during meetups.</p>
+                </div>
+                <div class="safety-card">
+                    <h3>Community Guidelines</h3>
+                    <p>Clear rules and active moderation maintain a respectful and safe environment for all users.</p>
+                </div>
+                <div class="safety-card">
+                    <h3>Privacy Controls</h3>
+                    <p>Robust settings allow users to control their visibility and personal information.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Audience Section -->
+    <section class="audience-section" id="vision">
+        <div class="container">
+            <div class="section-header">
+                <h2>Designed for the Lonely at Heart</h2>
+                <p>A platform tailored to those seeking real connections in a digital world</p>
+            </div>
+            <div class="audience-grid">
+                <div class="audience-card">
+                    <h3>Young Professionals</h3>
+                    <p>Individuals new to cities looking to build social circles beyond work.</p>
+                </div>
+                <div class="audience-card">
+                    <h3>Students Away from Home</h3>
+                    <p>College students seeking friendships and activities outside campus life.</p>
+                </div>
+                <div class="audience-card">
+                    <h3>Remote Workers</h3>
+                    <p>Freelancers and remote employees craving in-person interactions.</p>
+                </div>
+                <div class="audience-card">
+                    <h3>New Residents</h3>
+                    <p>People who have recently relocated and want to explore their new city socially.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Roadmap Section -->
+    <section class="roadmap-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Roadmap to Real Connections</h2>
+                <p>Our vision for evolving the platform to better serve our community</p>
+            </div>
+            <div class="roadmap-grid">
+                <div class="roadmap-card">
+                    <h3>Q3 2026: Beta Launch</h3>
+                    <p>Release of the initial app version to a select group for feedback and testing.</p>
+                </div>
+                <div class="roadmap-card">
+                    <h3>Q4 2026: Feature Expansion</h3>
+                    <p>Add new features like event creation, enhanced matching algorithms, and safety tools.</p>
+                </div>
+                <div class="roadmap-card">
+                    <h3>Q1 2027: Community Building</h3>
+                    <p>Focus on growing the user base through partnerships, marketing, and community events.</p>
+                </div>
+                <div class="roadmap-card">
+                    <h3>Q2 2027: Global Rollout</h3>
+                    <p>Expand availability to multiple cities worldwide, adapting to local cultures and needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Founder Section -->
+    <section class="founder-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>A Personal Mission</h2>
+            </div>
+            <div class="founder-content">
+                <p>We understand the profound need for genuine human connection. This platform is born out of a desire to create a space where people can find real friendships, not just digital interactions. Our vision is to build a community that fosters authentic relationships, helping individuals feel seen, heard, and valued.</p>
+                <p class="highlight">Join us on this journey to transform loneliness into connection, one real-life meetup at a time.</p>
+            </div>
+        </div>
+    </section>
+    <!-- Disclaimer Section -->
+    <section class="disclaimer-section">
+        <div class="container">
+            <div class="disclaimer-content">
+                <h2>Disclaimer</h2>
+                <p>This mobile app concept is a visionary proposal and does not represent an actual product currently available in the market. The features, functionalities, and services described herein are conceptual and intended for illustrative purposes only. Any resemblance to existing applications or services is purely coincidental. Users should exercise caution and conduct their own research before engaging with any similar platforms.</p>
+            </div>
+        </div>
+    </section>
+    <script>
+        // Custom Cursor Glow Effect
+        const cursorGlow = document.getElementById('cursorGlow');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+    </script>
+</body>
